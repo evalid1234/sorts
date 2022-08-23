@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Sorting Animations </title>
+        <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+        <meta name="description" content="Basic sorting animations">
+        <meta name="author" content="Eduardo">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://kit.fontawesome.com/9c050fdc22.js" crossorigin="anonymous"></script>
+        <script src="/assets/js/sorts.js"></script> 
+        <link rel="stylesheet" href="/assets/css/sorts.css">
+    </head>
+
+     <body onload="draw();">
+
+        <div class="grid-container">
+            <div id="message_div"><h1 id="message">Lets sort</h1></div>
+
+            <div class="sorting_buttons_div">  
+                <button class="button" id="bubble_button">Bubble Sort</button>
+                <button class="button" id="selection_button">Selection Sort</button>
+                <button class="button" id="insertion_button">Insertion Sort</button>
+            </div>
+          
+            <div id="canvas_div">
+                <canvas width="700px" height="500px" id="main_canvas">
+                    <!--fallback content-->
+                    <h1>canvas stuff</h1>
+                </canvas>  
+            </div>
+
+            <div id="forms_div">
+                <form class="form" id="form" action="javascript:;" >
+                    <label for="quantity">How many items? (between 2-50):</label>
+                    <input type="number" 
+                    placeholder="10" 
+                    id="quantity" name="quantity" min="2" max="50">
+                    <input class="submit" type="submit" value="Submit">
+                </form>
+
+                <!--too lazy to make a good regexp add a better one plz -->
+                <form class="form" id="form2" action="javascript:;">
+                    <label for="user_input">Enter
+                    values (2-10 items)
+                    expected format:(val,val,...val) </label>
+                    <input type="text" 
+                    placeholder="1,2,3,4" id="user_input" name="user_input"  pattern="\d+,\d+|\d+,\d+,\d+|\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+">
+                    <input class="submit" type="submit" value="Submit">
+                </form>
+            </div>
+
+            <div id="buttons_div">
+                <button class="button" id="speed_up" title="Speed Up"><i class="fa-solid fa-plus"></i></button>
+                <button class="button" id="slow_down" title="Slow Down"><i class="fa-solid fa-minus"></i></button>
+                <button class="button" id="pause" title="Pause"><i class="fa-solid fa-circle-pause"></i></button>
+                <button class="button" id="reset" title="Reset/Randomize"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+                <button class="button" id="colorblind" title="Change color scheme">Color</button>
+
+            </div>
+
+            <div id="error_div">
+                <p>
+                    <h3>Speed: <span id="speed">2</span></h3>
+                    <h3><span id="errors"> </span></h3>
+                </p>
+            </div>
+            
+        </div>    
+    </body>
+</html>
+
+
+
