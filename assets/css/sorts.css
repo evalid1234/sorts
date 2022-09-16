@@ -151,9 +151,16 @@ label {
 }
 
 
-@media only screen and (max-width: 700px){
-       
-    
+@media only screen and (max-width: 440px) {
+
+    #canvas_div {
+        max-width: 430px;
+    }
+
+    #buttons_div {
+        display: block;
+    }
+
 }
 
 
@@ -183,22 +190,12 @@ label {
         grid-column: 1/6;
         grid-row: 4/5;
         flex-direction: row;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
+        justify-items: flex-start;
+        align-items: center;
     }
-    .form{   
-        flex-direction: row;
-        flex: 1;
-    }
-    .form > input { 
-        height:50%;
-        align-self: center;
-        margin: 0 10px;
-        padding: 2px;
-    }
-    .form > label {
-        padding:10px;
-        border:1px solid;
+
+    .form {
+        flex-direction: column;
     }
 
     .sorting_buttons_div {
