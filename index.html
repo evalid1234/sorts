@@ -1,73 +1,74 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title> Sorting Animations </title>
-        <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-        <meta name="description" content="Basic sorting animations">
-        <meta name="author" content="Ed">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://kit.fontawesome.com/9c050fdc22.js" crossorigin="anonymous"></script>
-        <script src="assets/js/sorts.js"></script> 
-        <link rel="stylesheet" href="assets/css/sorts.css">
-    </head>
-
-     <body onload="draw();">
-
-        <div class="grid-container">
-            <div id="message_div"><h1 id="message">Lets sort</h1></div>
-
-            <div class="sorting_buttons_div">  
-                <button class="button" id="bubble_button">Bubble Sort</button>
-                <button class="button" id="selection_button">Selection Sort</button>
-                <button class="button" id="insertion_button">Insertion Sort</button>
-            </div>
-          
-            <div id="canvas_div">
-                <canvas width="700px" height="500px" id="main_canvas">
-                    <!--fallback content-->
-                    <h1>canvas stuff</h1>
-                </canvas>  
-            </div>
-
-            <div id="forms_div">
-                <form class="form" id="form" action="javascript:;" >
-                    <label for="quantity">How many items? (between 2-50):</label>
-                    <input type="number" 
-                    placeholder="10" 
-                    id="quantity" name="quantity" min="2" max="50">
-                    <input class="submit" type="submit" value="Submit">
-                </form>
-
-                <!--too lazy to make a good regexp add a better one plz -->
-                <form class="form" id="form2" action="javascript:;">
-                    <label for="user_input">Enter
-                    values (2-10 items)
-                    expected format:(val,val,...val) </label>
-                    <input type="text" 
-                    placeholder="1,2,3,4" id="user_input" name="user_input"  pattern="\d+,\d+|\d+,\d+,\d+|\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+">
-                    <input class="submit" type="submit" value="Submit">
-                </form>
-            </div>
-
-            <div id="buttons_div">
-                <button class="button" id="speed_up" title="Speed Up"><i class="fa-solid fa-plus"></i></button>
-                <button class="button" id="slow_down" title="Slow Down"><i class="fa-solid fa-minus"></i></button>
-                <button class="button" id="pause" title="Pause"><i class="fa-solid fa-circle-pause"></i></button>
-                <button class="button" id="reset" title="Reset/Randomize"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-                <button class="button" id="colorblind" title="Change color scheme">Color</button>
-
-            </div>
-
-            <div id="error_div">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Animations</title>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <meta name="description" content="Basic sorting animations">
+    <meta name="author" content="Ed">
+    <link rel="stylesheet" href="assets/css/sorts.css">
+    <script src="https://kit.fontawesome.com/9c050fdc22.js" crossorigin="anonymous" defer></script>
+    <script src="assets/js/sorts.js" defer></script> 
+</head>
+<body class="bodyContainer" onload="draw();">
+        <header class="message">
+            <h2 id="message">Let's sort</h2>
+        </header>
+        <nav class="topButtons">
+            <ul class="topButtons">
+                <li>
+                    <button class="button btn" id="bubble_button">Bubble Sort</button>
+                </li>
+                <li>
+                    <button class="button btn" id="selection_button">Selection Sort</button>
+                </li>
+                <li>
+                    <button class="button btn" id="insertion_button">Insertion Sort</button>
+                </li>
+            </ul>
+<div class="dropdown">
+  <button class="button dropbtn btn">Options</button>
+  <div class="dropdown-content">
+    <button class=" " id="speed_up" title="Speed Up"><i class="fa-solid fa-plus"></i> Faster</button>
+    <button class=" " id="slow_down" title="Slow Down"><i class="fa-solid fa-minus"></i> Slower</button>
+    <button class=" " id="pause" title="Pause"><i class="fa-solid fa-circle-pause"></i> Stop</button>
+    <button class=" " id="reset" title="Reset/Randomize"><i class="fa-solid fa-arrow-rotate-left"></i> Reset</button>
+    <button class="" id="colorblind" title="Change color scheme">Color</button>
+  </div>
+</div>
+        </nav>
+        <div class="error" id="error_div">
                 <p>
-                    <h3>Speed: <span id="speed">2</span></h3>
-                    <h3><span id="errors"> </span></h3>
+                    <h4>Speed: <span id="speed">2</span> <span> | </span><span id="errors">  </span> </h4>
+                   
                 </p>
             </div>
-            
-        </div>    
-    </body>
+        <main>
+            <canvas width="700" height="500" id="main_canvas">Your browser does not support the canvas element.</canvas>
+        </main>
+       <section class="formContainer">
+  <div class="form-buttons">
+    <button class="button btn" id="choose_amount">Choose amount</button>
+    <button class="button btn" id="enter_list">Enter list manually</button>
+  </div>
+  <form class="form hidden"  id="form" action="javascript:;">
+    <label for="quantity">How many items? (between 2-50):</label>
+    <input type="number" placeholder="10" id="quantity" name="quantity" min="2" max="50">
+    <button class="submit button" type="submit">Add items</button>
+  </form>
+  <form class="form hidden"  id="form2" action="javascript:;">
+    <label for="user_input">Enter positive values (2-40 items) in the format: (val,val,...val)</label>
+    <input type="text" placeholder="1,2,3,4" id="user_input" name="user_input" pattern="\d+(,\d+){1,39}">
+    <button class="submit button" type="submit">Add items</button>
+  </form>
+  
+</section>
+
+
+
+</body>
+
 </html>
 
 

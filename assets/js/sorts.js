@@ -1,9 +1,10 @@
 const draw = () => {
     //cache dom elements
     const form = document.getElementById("form");
+const enterListBtn = document.getElementById("enter_list");    const user_input_form = document.getElementById("form2");
+const chooseAmountBtn = document.getElementById("choose_amount");    
     const error_messages = document.getElementById("errors");
     const speed_message = document.getElementById("speed");
-    const user_input_form = document.getElementById("form2");
     const canvas = document.getElementById("main_canvas");
     const main_message = document.getElementById("message");
     const speed_up = document.getElementById("speed_up");
@@ -36,7 +37,18 @@ const draw = () => {
         const ctx = canvas.getContext("2d");
         const min_length = 2;
         let cb_mode = false;
+        chooseAmountBtn.addEventListener("click", () => {
+            form.classList.toggle("hidden");
+            if (!user_input_form.classList.contains("hidden"))
+                user_input_form.classList.add("hidden");
+        });
 
+        enterListBtn.addEventListener("click", () => {
+            user_input_form.classList.toggle("hidden");
+
+            if (!form.classList.contains("hidden"))
+                form.classList.add("hidden");
+        });
     /*---------------------- Button methods ----------------------*/
         const error_message = (err_no) => {
             if (err_no === 'sorting') {
@@ -100,22 +112,20 @@ const draw = () => {
         
     /*---------------------- Top Buttons ----------------------*/
         color_blind_button.addEventListener('click', () => {
-            const new_style= `
-            background-color: #fff;
-            color:#000;
-            `;
-            const old = `
-            background-color:#5C41F0;
-            color:#fff;
-            `;
+            
             const submit_color = document.querySelectorAll('.submit');
-            const button_color = document.querySelectorAll('.button');
+            const button_color = document.querySelectorAll('.btn');
             if (!cb_mode) {
                 cb_mode = true;
-                for (let i = 0; i < submit_color.length; ++i)
-                    submit_color[i].style.cssText = new_style;
-                for (let i = 0; i < button_color.length; ++i)
-                    button_color[i].style.cssText = new_style;
+                for (let i = 0; i < submit_color.length; ++i) {
+                    submit_color[i].classList.remove("button");
+                    submit_color[i].classList.add
+                        ("colorBlindButton");
+                }
+                for (let i = 0; i < button_color.length; ++i) {
+                    button_color[i].classList.remove("button");
+                    button_color[i].classList.add("colorBlindButton");
+                }
                 canvas.style.backgroundColor = "#fff";
                 document.body.style.backgroundColor = "#000";
                 document.body.style.color = "#fff";
@@ -127,13 +137,17 @@ const draw = () => {
             }
             else {
                 cb_mode = false;
-                for (let i = 0; i < submit_color.length; ++i)
-                    submit_color[i].style.cssText = old;
-                for (let i = 0; i < button_color.length; ++i)
-                    button_color[i].style.cssText = old;   
+                for (let i = 0; i < submit_color.length; ++i) {
+                  submit_color[i].classList.remove("colorBlindButton");
+                  submit_color[i].classList.add("button");
+                }
+                for (let i = 0; i < button_color.length; ++i) {
+                  button_color[i].classList.remove("colorBlindButton");
+                  button_color[i].classList.add("button");
+                } 
                 canvas.style.backgroundColor = "#000";
-                document.body.style.backgroundColor = "#fff";
-                document.body.style.color="#000";
+                document.body.style.backgroundColor = "#333";
+                document.body.style.color="#fff";
             }
             
         });
