@@ -23,10 +23,27 @@ const draw = () => {
 
   // display is none,we want to show the options when the container is clicked
 
+  // setup the select menus
+
+  // sorting selection menu
   const sorts_display_button = document.querySelector(".sorts_display_button");
   const sorts_options = document.querySelector("#sort_options_container");
+  const sorts_arrow = document.querySelector(".sort_arrow");
+  const sorts_text = document.querySelector(".sorts_select_text");
+
   sorts_display_button.addEventListener("click", () => {
     sorts_options.classList.toggle("active");
+    sorts_arrow.classList.toggle("active");
+  });
+
+  // settings selection menu
+  const menu_display_button = document.querySelector(".settings_button");
+  const menu_options = document.querySelector(".settings_div");
+  const gear_icon = document.querySelector(".settings_icon");
+
+  menu_display_button.addEventListener("click", () => {
+    menu_options.classList.toggle("active");
+    gear_icon.classList.toggle("active");
   });
 
   //public elements
@@ -141,37 +158,54 @@ const draw = () => {
       }
     });
 
+    const speed_options = {
+      0: "Paused",
+      1: "Min",
+      2: "Slow",
+      3: "Normal",
+      4: "Faster",
+      5: "Max",
+    };
     slow_down.addEventListener("click", () => {
       if (dx <= 1) return;
       dx--;
       update_speed(dx);
-      const text = dx === 1 ? "MIN" : dx;
-      speed_message.innerHTML = text;
+
+      speed_message.innerHTML = speed_options[dx];
     });
 
     speed_up.addEventListener("click", () => {
       if (dx >= 5) return;
       dx++;
       update_speed(dx);
-      const text = dx === 5 ? "MAX" : dx;
-      speed_message.innerHTML = text;
+      speed_message.innerHTML = speed_options[dx];
     });
 
     pause_button.addEventListener("click", () => {
       dx = dx === 0 ? DEFAULT_SPEED : 0;
       update_speed(dx);
-      speed_message.innerHTML = dx;
+      speed_message.innerHTML = speed_options[dx];
     });
 
     /*---------------------- Sorting Buttons ----------------------*/
+
+    const sort_selection_made = (text) => {
+      sorts_options.classList.toggle("active");
+      sorts_arrow.classList.toggle("active");
+      sorts_text.innerHTML = text;
+    };
     bubble_button.addEventListener("click", () => {
+      sort_selection_made("Bubble");
       sort_called(bubble_sort);
     });
 
     insertion_button.addEventListener("click", () => {
+      sort_selection_made("Insertion");
+
       sort_called(insertion_sort);
     });
     selection_button.addEventListener("click", () => {
+      sort_selection_made("Selection");
       sort_called(selection_sort);
     });
 
@@ -191,7 +225,7 @@ const draw = () => {
     const reset = () => {
       dx = DEFAULT_SPEED;
       update_speed(dx);
-      speed_message.innerHTML = dx;
+      speed_message.innerHTML = speed_options[dx];
       main_message.innerHTML = "Lets sort!";
       shuffleArray();
       ctx.clearRect(0, 0, inner_width, inner_height);
