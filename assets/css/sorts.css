@@ -11,20 +11,40 @@
 
 *:root {
   /* text sizes */
-
+  /* settings */
+  --setting-heading-color: #183d3d;
   /* icon */
   --icon-size: calc(1rem * 1.2);
   --button-text-sizes: inherit;
   /* buttons */
-  --button-background-color: black;
-  --button-outline: black;
-  --button-border: 1 outset #000000;
+  --button-background-color: #5c8374;
+  --button-outline: var(--button-background-color);
+  --button-border: 1 outset #183d3d;
   --button-text-color: white;
   --button-padding: 0.5rem;
   --button-border-radius: 5px;
-  --button-box-shadow: 1px 1px 2px 2px #848eaa;
+  --button-box-shadow: 0px 0px 1px 1px gray;
+  --disabled-opactiy: 30%;
+  --disabled-bg-color: #93b1a6;
 
+  /* forms */
+  --input-active-border: gray;
+  --input-active-outline: gray;
+  --input-active-shadow: 1px 1px 3px 3px black;
+  /* canvas */
+
+  --canvas-background: radial-gradient(circle at bottom, #5c8374, #183d3d);
+  --canvas-min-height: 50vh;
+  --canvas-max-height: 100vh;
+  --canvas-max-width: 100%;
+  --canvas-border-radius: 10px;
+  --canvas-box-shadow: var(--button-box-shadow);
+  --canvas-padding: var(--padding-regular);
+  --canvas-margin: var(--margnin-regular);
   /* layout */
+  --secondary-text-color: rgb(214, 211, 211);
+  --font-color: white;
+  --background-color: #040d12;
   --padding-regular: 1rem;
   --margnin-regular: 1rem;
 }
@@ -34,26 +54,9 @@ body {
   min-height: 100vh;
 }
 #canvas_div {
-  background: rgb(224, 224, 224);
-  background: -moz-radial-gradient(
-    circle,
-    rgba(224, 224, 224, 1) 0%,
-    rgba(222, 222, 222, 1) 15%,
-    rgba(156, 156, 156, 1) 100%
-  );
-  background: -webkit-radial-gradient(
-    circle,
-    rgba(224, 224, 224, 1) 0%,
-    rgba(222, 222, 222, 1) 15%,
-    rgba(156, 156, 156, 1) 100%
-  );
-  background: radial-gradient(
-    circle,
-    rgba(224, 224, 224, 1) 0%,
-    rgba(222, 222, 222, 1) 15%,
-    rgba(156, 156, 156, 1) 100%
-  );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e0e0e0",endColorstr="#9c9c9c",GradientType=1);
+  /* background: #28cdfc; */
+  background-color: var(--background-color);
+
   margin: 0;
   padding: var(--padding-regular);
   z-index: -1;
@@ -61,37 +64,31 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: back;
-
+  color: var(--font-color);
   display: flex;
   justify-content: center;
 }
 
 canvas {
-  height: 500px;
-  min-height: 50vh;
-  max-height: 75vh;
-  max-width: 100%;
-  border-radius: 5px;
-  border-radius: 10px;
-  box-shadow: 1px 1px 2px 2px rgb(167, 167, 167);
-  padding: var(--padding-regular);
-  margin: var(--margnin-regular);
+  height: var(--canvas-height);
+  /* min-height: var(--canvas-min-height); */
+  max-height: var(--canvas-max-height);
+  max-width: var(--canvas-max-width);
+  border-radius: var(--canvas-border-radius);
+  background: var(--canvas-background);
+  box-shadow: var(--canvas-box-shadow);
+  padding: var(--canvas-padding);
+  margin: var(--canvas-margin);
 }
 
 /* General styling */
-.button,
-input[type="submit"] {
+.button {
   border: var(--button-border);
   background-color: var(--button-background-color);
   color: var(--button-text-color);
-  box-shadow: var(--button-box-shadow);
   padding: var(--button-padding);
   cursor: pointer;
   outline-color: var(--button-outline);
-}
-input[type="submit"] {
-  border-radius: var(--button-border-radius);
 }
 
 .sorts_display_button,
@@ -171,7 +168,7 @@ input[type="submit"] {
   width: 100%;
   position: absolute;
   z-index: 3;
-  background-color: white;
+  background-color: transparent;
 }
 
 .sorting_buttons_div {
@@ -196,7 +193,12 @@ input[type="submit"] {
 }
 
 /* Settings  */
-
+.settings_heading {
+  text-align: center;
+  padding: var(--padding-regular);
+  background-color: var(--setting-heading-color);
+  color: white;
+}
 #buttons_div {
   position: relative;
   max-width: fit-content;
@@ -215,7 +217,7 @@ input[type="submit"] {
   width: 100%;
   position: absolute;
   z-index: 3;
-  background-color: white;
+  background-color: transparent;
   margin-top: 5px;
 }
 .settings_text {
@@ -263,7 +265,6 @@ input[type="submit"] {
 
 /* speed options */
 #error_div {
-  padding: var(--padding-regular);
   text-align: center;
 }
 
@@ -287,8 +288,8 @@ input[type="submit"] {
 
 /* text */
 .screen_text {
-  border-radius: 10px;
-  box-shadow: 1px 1px 2px 2px rgb(167, 167, 167);
+  border-radius: var(--button-border-radius);
+  box-shadow: var(--button-box-shadow);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -300,7 +301,17 @@ input[type="submit"] {
 /* forms */
 label {
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 5px;
+  padding: 10px;
+  background-color: var(--button-background-color);
+  color: var(--secondary-text-color);
+  border: var(--button-border);
+  border-radius: var(--button-border-radius);
+  box-shadow: var(--button-box-shadow);
+  outline: 1px black;
+  font-size: var(--button-text-sizes);
 }
 .form {
   display: flex;
@@ -308,6 +319,8 @@ label {
 }
 #forms_div {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #forms_div form {
   margin: var(--margnin-regular);
@@ -315,25 +328,51 @@ label {
 }
 
 input {
-  padding: 10px;
-  background-color: rgba(156, 156, 156, 1);
-  color: white;
-  border: var(--button-border);
-  border-radius: var(--button-border-radius);
-  outline: 1px white;
-  font-size: large;
+  background: transparent;
+  color: var(--button-text-color);
+  font-size: var(--button-text-sizes);
+  border: none;
+  padding-top: var(--padding-regular);
 }
 input:focus,
 input:active {
-  border: 1px white;
-  outline: 1px white;
-  box-shadow: 1px 1px 1px 1px black;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
+
 #forms_div input[type="submit"] {
   margin-top: 5px;
 }
+.form_hint {
+  text-align: center;
+  font-weight: 200;
+  color: var(--secondary-text-color);
+}
 
+.label_active {
+  border: var(--input-active-border);
+  outline: var(--input-active-outline);
+  box-shadow: var(--input-active-shadow);
+}
 /* footer */
 footer {
   margin: var(--margnin-regular);
+}
+
+.disabled {
+  background-color: var(--disabled-bg-color);
+}
+
+.button.disabled .sorts_icon {
+  opacity: var(--disabled-opactiy);
+}
+
+@media screen and (max-width: 800px) {
+  #forms_div {
+    flex-direction: column;
+  }
+  .form_break {
+    display: none;
+  }
 }

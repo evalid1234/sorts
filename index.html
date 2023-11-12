@@ -70,11 +70,10 @@
         </div>
         <div class="screen_text">
           <p id="message_div">
-            <span id="message">Add some items to begin sorting</span>
+            <span id="message">Add items to begin!</span>
           </p>
-          <p id="error_div">
-            <span id="speed"> </span>
-            <span id="errors"> </span>
+           <p id="errors">
+            
           </p>
         </div>
         <div id="buttons_div">
@@ -102,7 +101,9 @@
             </svg>
           </button>
           <ul class="settings_div">
+            <h5 class="settings_heading">Speed</h5>
             <button class="button" id="speed_up" title="Speed Up">
+              
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -148,6 +149,7 @@
                 />
               </svg>
             </button>
+            <h5 class="settings_heading">Shuffle</h5>
             <button class="button" id="reset" title="Reset/Randomize">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -164,6 +166,8 @@
                 />
               </svg>
             </button>
+
+            <h5 class="settings_heading">Theme</h5>
             <button class="button" id="colorblind" title="Change color scheme">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -188,35 +192,47 @@
         <!--fallback content-->
         <h1>canvas stuff</h1>
       </canvas>
-
+      <p class="form_hint">Ensure no white spaces when filling out form.</p>
       <div id="forms_div">
         <form class="form" id="form" action="javascript:;">
-          <label for="quantity">Items</label>
-          <input
-            type="number"
-            placeholder="ex: 10"
-            id="quantity"
-            name="quantity"
-            min="2"
-            max="50"
-          />
-          <input class="submit" type="submit" value="Insert" />
+          <label  class="form_label"for="quantity"
+            >Number of items
+            <input
+            class="input"
+              type="number"
+              placeholder="ex: 10"
+              id="quantity"
+              name="quantity"
+              min="2"
+              max="50"
+              required="true"
+            />
+          </label>
         </form>
-
-        <!--too lazy to make a good regexp add a better one plz -->
+       <span class="form_break">|</span>
         <form class="form" id="form2" action="javascript:;">
-          <label for="user_input">Custom values [1, ... ,10] </label>
+          <label class="form_label" for="user_input"
+            >Custom values [1, ... ,10]
+            <input
+             class="input"
+              type="text"
+              placeholder="ex: 167,234,353,435"
+              id="user_input"
+              name="user_input"
+              pattern="^(\d+(?:,\d+){0,9})?$"
+              required="true"
+            />
+          </label>
+          <!-- 
           <input
-            type="text"
-            placeholder="ex: 167,234,353,435"
-            id="user_input"
-            name="user_input"
-            pattern="^(\d+(?:,\d+){0,9})?$"
-          />
-          <input class="submit" type="submit" value="Insert" />
+            class="submit"
+            type="submit"
+            value=""
+            aria-label="Submit values to sort"
+          /> -->
         </form>
       </div>
-      <footer>
+       <footer>
         <small>&copy; evalid1234 | 2024</small>
       </footer>
     </main>

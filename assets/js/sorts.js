@@ -3,52 +3,82 @@ document.addEventListener("DOMContentLoaded", function (event) {
 });
 const draw = () => {
   //cache dom elements
-  const form = document.getElementById("form");
+  // layout
+  const background_container = document.querySelector("#canvas_div");
+  const button_color = document.querySelectorAll(".button");
+  // forms
+  const number_input_form = document.getElementById("form");
   const error_messages = document.getElementById("errors");
-  const speed_message = document.getElementById("speed");
   const user_input_form = document.getElementById("form2");
   const canvas = document.getElementById("main_canvas");
+
+  // forms label and inputs
+  const form_inputs = document.querySelectorAll(".input");
+
+  // feedback
   const main_message = document.getElementById("message");
   const speed_up = document.getElementById("speed_up");
+
+  // setting_buttons
   const slow_down = document.getElementById("slow_down");
   const color_blind_button = document.getElementById("colorblind");
   const pause_button = document.getElementById("pause");
   const reset_button = document.getElementById("reset");
+
+  //setting dropdown button
+  const menu_display_button = document.querySelector(".settings_button");
+  const menu_options = document.querySelector(".settings_div");
+  const gear_icon = document.querySelector(".settings_icon");
+
+  // sort option buttons
   const bubble_button = document.getElementById("bubble_button");
   const selection_button = document.getElementById("selection_button");
   const insertion_button = document.getElementById("insertion_button");
-  const box_colors_original = ["#F04E35", "#5C41F0", "#35F09A"];
-  //larger,smaller,sorted,on creation
-  const box_colors_cb = ["#9A9A9A", "#B5B5B5", "#808080", "#D0D0D0"];
 
-  // display is none,we want to show the options when the container is clicked
-
-  // setup the select menus
-
-  // sorting selection menu
+  // sort dropdown button
   const sorts_display_button = document.querySelector(".sorts_display_button");
   const sorts_options = document.querySelector("#sort_options_container");
   const sorts_arrow = document.querySelector(".sort_arrow");
   const sorts_text = document.querySelector(".sorts_select_text");
 
-  sorts_display_button.addEventListener("click", () => {
-    sorts_options.classList.toggle("active");
-    sorts_arrow.classList.toggle("active");
-  });
+  const dark_theme = {
+    button_background: "white",
+    button_color: "black",
+    background: "black",
+    background_text: "white",
+  };
 
-  // settings selection menu
-  const menu_display_button = document.querySelector(".settings_button");
-  const menu_options = document.querySelector(".settings_div");
-  const gear_icon = document.querySelector(".settings_icon");
+  const light_theme = {
+    button_background: "black",
+    button_color: "white",
+    background: "white",
+    background_text: "black",
+  };
 
-  menu_display_button.addEventListener("click", () => {
-    menu_options.classList.toggle("active");
-    gear_icon.classList.toggle("active");
-  });
+  const box_colors_original = {
+    larger: "#FE0000",
+    smaller: "#0E21A0",
+    sorted: "#FFE5AD",
+    default: "#1B9C85",
+    scanning: " red",
+  };
+
+  // the color of the box being passed over on swap
+  const lower_opacity = "rgba(128, 128, 128,.5)";
+
+  //larger,smaller,sorted,on creation
+  const box_colors_cb = {
+    larger: "#FE0000",
+    smaller: "#0E21A0",
+    sorted: "#FFE5AD",
+    default: "white",
+    scanning: "bubble_button",
+  };
 
   //public elements
   let arr = [];
   let selection_made = false;
+  let selection_choice = "";
   const DEFAULT_SPEED = 2;
   let dx = DEFAULT_SPEED;
   let reset_scheduled = false;
@@ -64,16 +94,34 @@ const draw = () => {
     const ctx = canvas.getContext("2d");
     const min_length = 2;
     let cb_mode = false;
+    /*---------------------- form label events----------------------*/
+
+    form_inputs.forEach((input) => {
+      input.addEventListener("click", () => {
+        input.parentElement.classList.toggle("label_active");
+      });
+    });
+
+    /*---------------------- dropdown events ----------------------*/
+    sorts_display_button.addEventListener("click", () => {
+      sorts_options.classList.toggle("active");
+      sorts_arrow.classList.toggle("active");
+    });
+
+    menu_display_button.addEventListener("click", () => {
+      menu_options.classList.toggle("active");
+      gear_icon.classList.toggle("active");
+    });
 
     /*---------------------- Button methods ----------------------*/
     const error_message = (err_no) => {
       if (err_no === "sorting") {
-        error_messages.innerHTML = "Sorting";
+        error_messages.innerHTML = "Already Sorting!";
         setTimeout(() => {
           error_messages.innerHTML = " ";
         }, 2000);
       } else if (err_no === "empty") {
-        error_messages.innerHTML = "No boxes!";
+        error_messages.innerHTML = "Minimum of 2 items!";
         setTimeout(() => {
           error_messages.innerHTML = " ";
         }, 2000);
@@ -92,8 +140,8 @@ const draw = () => {
     };
 
     /*---------------------- Form calls ----------------------*/
-    form.addEventListener("submit", () => {
-      const num = form[0].value;
+    number_input_form.addEventListener("submit", () => {
+      const num = number_input_form[0].value;
       if (selection_made) {
         error_message("sorting");
       } else {
@@ -122,42 +170,45 @@ const draw = () => {
     });
 
     /*---------------------- Top Buttons ----------------------*/
+    const changeTheme = (button_style, background_color, background_text) => {
+      cb_mode = !cb_mode;
+
+      for (let i = 0; i < button_color.length; ++i)
+        button_color[i].style = button_style;
+      background_container.style.background = background_color;
+      background_container.style.color = background_text;
+    };
+
     color_blind_button.addEventListener("click", () => {
-      const new_style = `
-            background-color: #fff;
-            color:#000;
+      const light_theme_button_styles = `
+            background-color: ${light_theme.button_background};
+            color:${light_theme.button_color};
             `;
-      const old = `
-            background-color:#5C41F0;
-            color:#fff;
+      const dark_theme_button_styles = `
+            background-color:${dark_theme.button_background};
+            color:${dark_theme.button_color};
             `;
-      const submit_color = document.querySelectorAll(".submit");
-      const button_color = document.querySelectorAll(".button");
       if (!cb_mode) {
-        cb_mode = true;
-        for (let i = 0; i < submit_color.length; ++i)
-          submit_color[i].style.cssText = new_style;
-        for (let i = 0; i < button_color.length; ++i)
-          button_color[i].style.cssText = new_style;
-        canvas.style.backgroundColor = "#fff";
-        document.body.style.backgroundColor = "#000";
-        document.body.style.color = "#fff";
-        error_messages.innerHTML = "Colorblind mode!";
-        setTimeout(() => {
-          error_messages.innerHTML = " ";
-        }, 2000);
+        changeTheme(
+          light_theme_button_styles,
+          light_theme.background,
+          light_theme.background_text
+        );
       } else {
-        cb_mode = false;
-        for (let i = 0; i < submit_color.length; ++i)
-          submit_color[i].style.cssText = old;
-        for (let i = 0; i < button_color.length; ++i)
-          button_color[i].style.cssText = old;
-        canvas.style.backgroundColor = "#000";
-        document.body.style.backgroundColor = "#fff";
-        document.body.style.color = "#000";
+        changeTheme(
+          dark_theme_button_styles,
+          dark_theme.background,
+          dark_theme.background_text
+        );
       }
     });
 
+    const updateSpeedMessage = (text) => {
+      error_messages.innerHTML = text;
+      setTimeout(() => {
+        error_messages.innerHTML = "";
+      }, 2000);
+    };
     const speed_options = {
       0: "Paused",
       1: "Min",
@@ -167,24 +218,44 @@ const draw = () => {
       5: "Max",
     };
     slow_down.addEventListener("click", () => {
-      if (dx <= 1) return;
+      if (dx <= 1) {
+        return;
+      }
       dx--;
+      if (dx <= 1) {
+        slow_down.classList.add("disabled");
+      }
+      if (speed_up.classList.contains("disabled")) {
+        speed_up.classList.remove("disabled");
+      }
       update_speed(dx);
-
-      speed_message.innerHTML = speed_options[dx];
+      updateSpeedMessage(speed_options[dx]);
     });
 
     speed_up.addEventListener("click", () => {
       if (dx >= 5) return;
       dx++;
+      if (dx >= 5) {
+        speed_up.classList.add("disabled");
+      }
+      if (slow_down.classList.contains("disabled")) {
+        slow_down.classList.remove("disabled");
+      }
       update_speed(dx);
-      speed_message.innerHTML = speed_options[dx];
+      updateSpeedMessage(speed_options[dx]);
     });
 
     pause_button.addEventListener("click", () => {
       dx = dx === 0 ? DEFAULT_SPEED : 0;
+
+      if (speed_up.classList.contains("disabled")) {
+        speed_up.classList.remove("disabled");
+      }
+      if (!slow_down.classList.contains("disabled")) {
+        slow_down.classList.add("disabled");
+      }
       update_speed(dx);
-      speed_message.innerHTML = speed_options[dx];
+      updateSpeedMessage(speed_options[dx]);
     });
 
     /*---------------------- Sorting Buttons ----------------------*/
@@ -192,6 +263,37 @@ const draw = () => {
     const sort_selection_made = (text) => {
       sorts_options.classList.toggle("active");
       sorts_arrow.classList.toggle("active");
+      switch (text) {
+        case "Bubble":
+          bubble_button.classList.add("disabled");
+          break;
+        case "Selection":
+          selection_button.classList.add("disabled");
+          break;
+        case "Insertion":
+          insertion_button.classList.add("disabled");
+          break;
+        default:
+          break;
+      }
+
+      switch (selection_choice) {
+        case text:
+          break;
+        case "Bubble":
+          bubble_button.classList.remove("disabled");
+          break;
+        case "Selection":
+          selection_button.classList.remove("disabled");
+          break;
+        case "Insertion":
+          insertion_button.classList.remove("disabled");
+          break;
+        default:
+          break;
+      }
+
+      selection_choice = text;
       sorts_text.innerHTML = text;
     };
     bubble_button.addEventListener("click", () => {
@@ -215,18 +317,13 @@ const draw = () => {
         reset();
       } else {
         reset_scheduled = true;
-        error_messages.innerHTML = "Resetting...";
-        setTimeout(() => {
-          error_messages.innerHTML = "";
-        }, 2000);
       }
     });
 
     const reset = () => {
       dx = DEFAULT_SPEED;
       update_speed(dx);
-      speed_message.innerHTML = speed_options[dx];
-      main_message.innerHTML = "Lets sort!";
+      main_message.innerHTML = "Add items to begin!";
       shuffleArray();
       ctx.clearRect(0, 0, inner_width, inner_height);
       reset_all_colors();
@@ -235,14 +332,20 @@ const draw = () => {
 
     /*---------------------- Box Class Declaration ---------------------- */
     class box {
-      constructor(x, y, width = 20, height = 60, color = "gray") {
+      constructor(
+        x,
+        y,
+        width = 20,
+        height = 60,
+        color = box_colors_original["default"]
+      ) {
         this.x = x;
         //uses glbal var for listener
         this.dx = dx;
         this.y = y;
         this.width = width;
         this.height = height;
-        if (cb_mode) this.color = box_colors_cb[3];
+        if (cb_mode) this.color = box_colors_cb["default"];
         else {
           this.color = color;
         }
@@ -360,28 +463,28 @@ const draw = () => {
     const reset_all_colors = () => {
       if (!cb_mode) {
         for (let i = 0; i < arr.length; ++i) {
-          arr[i].color = "rgba(128, 128, 128,1)";
+          arr[i].color = box_colors_original["default"];
         }
       } else {
         for (let i = 0; i < arr.length; ++i) {
-          arr[i].color = box_colors_cb[3];
+          arr[i].color = box_colors_cb["default"];
         }
       }
     };
     const reduce_opacity = (start, end) => {
       if (start === arr.length - 1) return;
       for (let i = start + 1; i < end; ++i) {
-        arr[i].color = "rgba(128, 128, 128,.5)";
+        arr[i].color = lower_opacity;
       }
     };
     const sorted_section = (start, end) => {
       if (!cb_mode) {
         for (let i = start; i < end; ++i) {
-          arr[i].color = box_colors_original[2];
+          arr[i].color = box_colors_original["sorted"];
         }
       } else {
         for (let i = start; i < end; ++i) {
-          arr[i].color = box_colors_cb[2];
+          arr[i].color = box_colors_cb["sorted"];
         }
       }
     };
@@ -406,19 +509,19 @@ const draw = () => {
       //update box positions and color
       sorted_section(sorted_beginning, sorted_end);
       if (!cb_mode) {
-        arr[bigger].color = box_colors_original[0];
-        arr[smaller].color = box_colors_original[1];
+        arr[bigger].color = box_colors_original["larger"];
+        arr[smaller].color = box_colors_original["smaller"];
       } else {
-        arr[bigger].color = box_colors_cb[0];
-        arr[smaller].color = box_colors_cb[1];
+        arr[bigger].color = box_colors_cb["larger"];
+        arr[smaller].color = box_colors_cb["smaller"];
       }
     };
 
     const set_scanning_color = (index, s_start, s_end) => {
       sorted_section(s_start, s_end);
-      if (!cb_mode) arr[index].color = box_colors_original[1];
+      if (!cb_mode) arr[index].color = box_colors_original["scanning"];
       else {
-        arr[index].color = "#000";
+        arr[index].color = box_colors_cb["scanning"];
       }
       ctx.clearRect(0, 0, inner_width, inner_height);
       printAll();
