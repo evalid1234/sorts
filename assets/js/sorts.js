@@ -119,6 +119,7 @@ const draw = () => {
       gear_icon.classList.toggle("active");
     });
 
+       
     /*---------------------- Button methods ----------------------*/
     const error_message = (err_no) => {
       error_messages.style.color = message_color.error;
