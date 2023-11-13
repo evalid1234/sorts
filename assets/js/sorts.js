@@ -119,12 +119,6 @@ const draw = () => {
       gear_icon.classList.toggle("active");
     });
 
-        enterListBtn.addEventListener("click", () => {
-            user_input_form.classList.toggle("hidden");
-
-            if (!form.classList.contains("hidden"))
-                form.classList.add("hidden");
-        });
     /*---------------------- Button methods ----------------------*/
     const error_message = (err_no) => {
       error_messages.style.color = message_color.error;
