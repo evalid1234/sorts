@@ -1,74 +1,244 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> Sorting Animations </title>
-        <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
-        <meta name="description" content="Basic sorting animations">
-        <meta name="author" content="Eduardo">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://kit.fontawesome.com/9c050fdc22.js" crossorigin="anonymous"></script>
-        <script src="/assets/js/sorts.js"></script> 
-        <link rel="stylesheet" href="/assets/css/sorts.css">
-    </head>
+  <!-- CHANGE ALL THE LINKS! BEFORE PRODUCTION -->
+  <head>
+    <title>Sorting Animations</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" />
+    <meta name="description" content="Basic sorting animations" />
+    <meta name="author" content="Eduardo" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/9c050fdc22.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/assets/js/sorts.js" defer></script>
+    <link rel="stylesheet" href="/assets/css/sorts.css" />
+    <!-- remover this later -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
 
-     <body onload="draw();">
+  <body onload="draw();">
+    <!-- <div class="grid-container"> -->
+    <nav class="options">
+      <a class="home" href="https://evalid1234.github.io"
+        ><span>  </span
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="sorts_icon home_icon"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+          />
+        </svg>
+      </a>
+      <div class="selections">
+        <div role="menu" class="sorts_display">
+          <button class="sorts_display_button">
+            <span class="sorts_select_text">Sorts</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="sorts_icon sort_arrow"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </button>
+          <ul id="sort_options_container" class="sorting_buttons_div">
+            <button class="button" id="bubble_button">Bubble</button>
+            <button class="button" id="selection_button">Selection</button>
+            <button class="button" id="insertion_button">Insertion</button>
+          </ul>
+        </div>
 
-        <div class="grid-container">
-            <div id="message_div"><h1 id="message">Lets sort</h1></div>
+        <div id="buttons_div">
+          <button class="settings_button" role="menu">
+            <span class="settings_text"> Settings</span>
 
-            <div class="sorting_buttons_div">  
-                <button class="button" id="bubble_button">Bubble Sort</button>
-                <button class="button" id="selection_button">Selection Sort</button>
-                <button class="button" id="insertion_button">Insertion Sort</button>
-            </div>
-          
-            <div id="canvas_div">
-                <canvas width="700px" height="500px" id="main_canvas">
-                    <!--fallback content-->
-                    <h1>canvas stuff</h1>
-                </canvas>  
-            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="settings_icon"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          </button>
+          <ul class="settings_div">
+            <h5 class="settings_heading">Speed</h5>
+            <button class="button" id="speed_up" title="Speed Up">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="sorts_icon"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 5.25a.75.75 0 01.75.75v5.25H18a.75.75 0 010 1.5h-5.25V18a.75.75 0 01-1.5 0v-5.25H6a.75.75 0 010-1.5h5.25V6a.75.75 0 01.75-.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button class="button" id="slow_down" title="Slow Down">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="sorts_icon"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 12h-15"
+                />
+              </svg>
+            </button>
+            <button class="button" id="pause" title="Pause">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="sorts_icon"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z"
+                />
+              </svg>
+            </button>
+            <h5 class="settings_heading">Shuffle</h5>
+            <button class="button" id="reset" title="Reset/Randomize">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="sorts_icon"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                />
+              </svg>
+            </button>
 
-            <div id="forms_div">
-                <form class="form" id="form" action="javascript:;" >
-                    <label for="quantity">How many items? (between 2-50):</label>
-                    <input type="number" 
-                    placeholder="10" 
-                    id="quantity" name="quantity" min="2" max="50">
-                    <input class="submit" type="submit" value="Submit">
-                </form>
+            <h5 class="settings_heading">Theme</h5>
+            <button class="button" id="colorblind" title="Change color scheme">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="sorts_icon"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
+                />
+              </svg>
+            </button>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main id="canvas_div">
+      <p id="errors">Add items to begin!</p>
 
-                <!--too lazy to make a good regexp add a better one plz -->
-                <form class="form" id="form2" action="javascript:;">
-                    <label for="user_input">Enter
-                    values (2-10 items)
-                    expected format:(val,val,...val) </label>
-                    <input type="text" 
-                    placeholder="1,2,3,4" id="user_input" name="user_input"  pattern="\d+,\d+|\d+,\d+,\d+|\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+|\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+,\d+">
-                    <input class="submit" type="submit" value="Submit">
-                </form>
-            </div>
+      <canvas width="700px" height="500px" id="main_canvas">
+        <!--fallback content-->
+        <h1>canvas stuff</h1>
+      </canvas>
 
-            <div id="buttons_div">
-                <button class="button" id="speed_up" title="Speed Up"><i class="fa-solid fa-plus"></i></button>
-                <button class="button" id="slow_down" title="Slow Down"><i class="fa-solid fa-minus"></i></button>
-                <button class="button" id="pause" title="Pause"><i class="fa-solid fa-circle-pause"></i></button>
-                <button class="button" id="reset" title="Reset/Randomize"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-                <button class="button" id="colorblind" title="Change color scheme">Color</button>
+      <div id="forms_div">
+        <form class="form" id="form" action="javascript:;">
+          <label class="form_label" for="quantity"
+            >Number of items
+            <input
+              class="input"
+              type="number"
+              placeholder="ex: 10"
+              id="quantity"
+              name="quantity"
+              min="2"
+              max="50"
+              required="true"
+            />
+          </label>
+        </form>
+        <span class="form_break">|</span>
+        <form class="form" id="form2" action="javascript:;">
+          <label class="form_label" for="user_input"
+            >Custom values [1, ... ,10]
+            <input
+              class="input"
+              type="text"
+              placeholder="ex: 167,234,353,435"
+              id="user_input"
+              name="user_input"
+              pattern="^(\d+(?:,\d+){0,9})?$"
+              required="true"
+            />
+          </label>
+        </form>
+      </div>
+      <footer>
+        <small>&copy; evalid1234 | 2024</small>
+      </footer>
+    </main>
+    <noscript class="no_script">
+      <h1>Oh no...</h1>
+      <h2>
+        <strong><em>Javascript disabled</em></strong>
+      </h2>
+      <p>
+        Sorry, currently this site uses alot of JS. I will be adding fallback
+        support soon. please enable JS to continue. Or check back later!
+      </p>
+    </noscript>
+    <div class="loading_group">
+      <h1 aria-hidden="true" id="spinner_message">Loading...</h1>
 
-            </div>
-
-            <div id="error_div">
-                <p>
-                    <h3>Speed: <span id="speed">2</span></h3>
-                    <h3><span id="errors"> </span></h3>
-                </p>
-            </div>
-            
-        </div>    
-    </body>
+      <i id="spinner" class="fa-solid fa-spinner fa-spin-pulse"></i>
+    </div>
+  </body>
 </html>
-
-
-
