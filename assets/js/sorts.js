@@ -16,7 +16,6 @@ const draw = () => {
   const form_inputs = document.querySelectorAll(".input");
 
   // feedback
-  const main_message = document.getElementById("message");
   const speed_up = document.getElementById("speed_up");
 
   // setting_buttons
@@ -42,10 +41,11 @@ const draw = () => {
   const sorts_text = document.querySelector(".sorts_select_text");
 
   const dark_theme = {
-    button_background: "white",
-    button_color: "black",
-    background: "black",
+    button_background: "#5c8374",
+    button_color: "white",
+    background: "#040d12",
     background_text: "white",
+    canvas_background: "radial-gradient(circle at bottom, #5c8374, #183d3d)",
   };
 
   const light_theme = {
@@ -53,14 +53,20 @@ const draw = () => {
     button_color: "white",
     background: "white",
     background_text: "black",
+    canvas_background: "",
   };
 
+  const message_color = {
+    error: "red",
+    done: "green",
+    regular: "blue",
+  };
   const box_colors_original = {
-    larger: "#FE0000",
-    smaller: "#0E21A0",
-    sorted: "#FFE5AD",
-    default: "#1B9C85",
-    scanning: " red",
+    larger: "#4D2DB7",
+    smaller: "#9D44C0",
+    sorted: "#EC53B0",
+    default: "#0E21A0",
+    scanning: "#FE0000",
   };
 
   // the color of the box being passed over on swap
@@ -68,11 +74,11 @@ const draw = () => {
 
   //larger,smaller,sorted,on creation
   const box_colors_cb = {
-    larger: "#FE0000",
-    smaller: "#0E21A0",
-    sorted: "#FFE5AD",
-    default: "white",
-    scanning: "bubble_button",
+    larger: "gray",
+    smaller: "white",
+    sorted: "blue",
+    default: "black",
+    scanning: "#FE0000",
   };
 
   //public elements
@@ -115,16 +121,11 @@ const draw = () => {
 
     /*---------------------- Button methods ----------------------*/
     const error_message = (err_no) => {
+      error_messages.style.color = message_color.error;
       if (err_no === "sorting") {
         error_messages.innerHTML = "Already Sorting!";
-        setTimeout(() => {
-          error_messages.innerHTML = " ";
-        }, 2000);
       } else if (err_no === "empty") {
         error_messages.innerHTML = "Minimum of 2 items!";
-        setTimeout(() => {
-          error_messages.innerHTML = " ";
-        }, 2000);
       }
     };
 
@@ -146,7 +147,6 @@ const draw = () => {
         error_message("sorting");
       } else {
         ctx.clearRect(0, 0, inner_width, inner_height);
-        main_message.innerHTML = "Lets Sort!";
         arr = create_items(num);
         printAll();
       }
@@ -163,7 +163,6 @@ const draw = () => {
         error_message("sorting");
       } else {
         ctx.clearRect(0, 0, inner_width, inner_height);
-        main_message.innerHTML = "Lets Sort!";
         arr = create_user_array(temp_array);
         printAll();
       }
@@ -204,10 +203,8 @@ const draw = () => {
     });
 
     const updateSpeedMessage = (text) => {
+      error_messages.style.color = message_color.regular;
       error_messages.innerHTML = text;
-      setTimeout(() => {
-        error_messages.innerHTML = "";
-      }, 2000);
     };
     const speed_options = {
       0: "Paused",
@@ -323,7 +320,7 @@ const draw = () => {
     const reset = () => {
       dx = DEFAULT_SPEED;
       update_speed(dx);
-      main_message.innerHTML = "Add items to begin!";
+
       shuffleArray();
       ctx.clearRect(0, 0, inner_width, inner_height);
       reset_all_colors();
@@ -432,7 +429,8 @@ const draw = () => {
       for (let i = 0; i < length; ++i) {
         if (array[i] > max_height) {
           array[i] = max_height;
-          main_message.innerHTML = `Max height of ${max_height} allowed. `;
+          error_messages.style.color = message_color.error;
+          error_messages.innerHTML = `Max height of ${max_height} allowed. `;
         }
         return_array.push(new box(current_x, y_height, BOX_WIDTH, array[i]));
         current_x += BOX_WIDTH + GAP;
@@ -494,7 +492,8 @@ const draw = () => {
       sorted_section(0, loop);
       printAll();
       selection_made = false;
-      main_message.innerHTML = `Sorted in: ${end_time / 1000}s`;
+      error_messages.style.color = message_color.done;
+      error_messages.innerHTML = `Sorted in: ${end_time / 1000}s`;
     };
 
     const update_arr = (first, second) => {
@@ -553,9 +552,6 @@ const draw = () => {
         }
         //animate current swap
         if (inSwap) {
-          main_message.innerHTML = `Swapping ${arr[index].height} with ${
-            arr[index + 1].height
-          }!`;
           //update boxes
           color_boxes(index + 1, index, arr.length, arr.length - loop);
           let t1 = arr[index].update(larger_x + arr[index + 1].width + GAP);
@@ -626,7 +622,6 @@ const draw = () => {
         }
         //animate current swap
         if (inSwap) {
-          main_message.innerHTML = `Swapping ${arr[smallest].height} with ${arr[loop].height}!`;
           //update boxes
           color_boxes(smallest, loop, loop);
           reduce_opacity(loop, smallest);
@@ -702,9 +697,6 @@ const draw = () => {
         }
         //animate current swap
         if (inSwap) {
-          main_message.innerHTML = `Swapping ${arr[index].height} with ${
-            arr[index - 1].height
-          }!`;
           //update boxes
           color_boxes(index, index - 1, loop);
           let t1 = arr[index].update(larger_x);
