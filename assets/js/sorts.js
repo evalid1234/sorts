@@ -59,7 +59,7 @@ const draw = () => {
   const message_color = {
     error: "red",
     done: "green",
-    regular: "blue",
+    regular: "#5c8374",
   };
   const box_colors_original = {
     larger: "#4D2DB7",
@@ -119,7 +119,6 @@ const draw = () => {
       gear_icon.classList.toggle("active");
     });
 
-       
     /*---------------------- Button methods ----------------------*/
     const error_message = (err_no) => {
       error_messages.style.color = message_color.error;
@@ -140,6 +139,24 @@ const draw = () => {
         error_message("sorting");
       }
     };
+
+    const form_buttons = document.querySelectorAll(".form_buttons");
+
+    form_buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.classList.contains("regular")) {
+          number_input_form.classList.toggle("selected");
+          if (user_input_form.classList.contains("selected")) {
+            user_input_form.classList.toggle("selected");
+          }
+        } else {
+          user_input_form.classList.toggle("selected");
+          if (number_input_form.classList.contains("selected")) {
+            number_input_form.classList.toggle("selected");
+          }
+        }
+      });
+    });
 
     /*---------------------- Form calls ----------------------*/
     number_input_form.addEventListener("submit", () => {
